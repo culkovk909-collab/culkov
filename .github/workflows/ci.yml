@@ -1,0 +1,29 @@
+name: Project Integrity Check
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  verify-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Скачивание кода репозитория
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Шаг 2: Проверка наличия обязательных файлов
+      - name: Check required files
+        run: |
+          if [ ! -f README.md ]; then
+            echo "Ошибка: README.md отсутствует"
+            exit 1
+          fi
+          if [ ! -f CHANGELOG.md ]; then
+            echo "Ошибка: CHANGELOG.md отсутствует"
+            exit 1
+          fi
+          echo "Все обязательные файлы найдены!"
